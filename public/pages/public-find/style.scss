@@ -1,0 +1,70 @@
+body {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+}
+
+#main {
+	position: relative;
+	//border: 5px solid #292929;
+	border-radius: 15px;
+	background-color: #ffffff;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 1050px;
+	height: 600px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+
+	> div > img {
+		width: 200px;
+		align-self: center;
+		margin-top: 10px;
+		margin-bottom: -30px;
+	}
+
+	> .content {
+		grid-column: 2 / 7;
+		grid-row: 2 / 4;
+		padding: 60px;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	> .colors {
+		margin: 10px;
+		border-radius: 20px;
+		z-index: -10;
+	}
+
+	:nth-child(2) {
+		border-radius: 50px 20px 20px 20px;
+	}
+
+	:nth-child(8) {
+		border-radius: 20px 50px 20px 20px;
+	}
+
+	:nth-child(13) {
+		border-radius: 20px 20px 20px 50px;
+	}
+
+	:nth-child(19) {
+		border-radius: 20px 20px 50px 20px;
+	}
+}
+
+// .game-colors {
+// 	position: relative;
+// 	width: 300px;
+// 	height: 300px;
+// 	display: grid;
+
+// 	> div {
+// 		position: absolute;
+// 		z-index: -10;
+// 	}
+// }

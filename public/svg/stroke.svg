@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="780" viewBox="0 0 60.14 780">
+  <defs>
+    <clipPath id="clip-stroke">
+      <rect width="60.14" height="780"/>
+    </clipPath>
+  </defs>
+  <g id="stroke" clip-path="url(#clip-stroke)">
+    <path id="Path_1" data-name="Path 1" d="M81-47a2,2,0,0,1,2-2,2,2,0,0,1,2,2l28,748s2.989,30-30,30-30-30-30-30Z" transform="translate(113 731) rotate(180)"/>
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="4" cy="4" r="4" transform="translate(26 596)" fill="#888"/>
+  </g>
+</svg>

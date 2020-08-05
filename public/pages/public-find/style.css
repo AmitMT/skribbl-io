@@ -1,0 +1,75 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+#main {
+  position: relative;
+  border-radius: 15px;
+  background-color: #ffffff;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 1050px;
+  height: 600px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[7];
+      grid-template-columns: repeat(7, 1fr);
+  -ms-grid-rows: (1fr)[4];
+      grid-template-rows: repeat(4, 1fr);
+}
+
+#main > div > img {
+  width: 200px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin-top: 10px;
+  margin-bottom: -30px;
+}
+
+#main > .content {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 5;
+  grid-column: 2 / 7;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  grid-row: 2 / 4;
+  padding: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#main > .colors {
+  margin: 10px;
+  border-radius: 20px;
+  z-index: -10;
+}
+
+#main :nth-child(2) {
+  border-radius: 50px 20px 20px 20px;
+}
+
+#main :nth-child(8) {
+  border-radius: 20px 50px 20px 20px;
+}
+
+#main :nth-child(13) {
+  border-radius: 20px 20px 20px 50px;
+}
+
+#main :nth-child(19) {
+  border-radius: 20px 20px 50px 20px;
+}
+/*# sourceMappingURL=style.css.map */
