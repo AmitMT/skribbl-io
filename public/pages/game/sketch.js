@@ -12,7 +12,7 @@ function setup() {
 		room.people = data.people;
 		peopleInRoom(room.people);
 	});
-
+	//
 	canvas = createCanvas(500, 700);
 	canvas.id('canvas');
 	canvas.parent('game-colors');
