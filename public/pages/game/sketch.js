@@ -1,5 +1,5 @@
 function setup() {
-	socket = io.connect(location.protocol + '//' + location.host + location.pathname);
+	socket = io.connect(location.protocol + '//' + location.host);
 	alert(location.protocol + '//' + location.host + location.pathname);
 	alert(window.location.href);
 	socket.on('id', (data) => {
