@@ -5,7 +5,7 @@ This Website is a remake of skribbl.io I am making with Node.js Express, and Soc
 <br>
 <hr>
 
-## My website:
+## Links To The Online Game:
 * Home:
 <br>https://skribbl-io.herokuapp.com/
 
