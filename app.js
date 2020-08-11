@@ -81,6 +81,27 @@ class Room {
 	}
 }
 
+const colors = {
+	background: '#272935',
+	black: '#21222C',
+	blue: '#BD93F9',
+	cyan: '#8BE9FD',
+	foreground: '#F8F8F2',
+	green: '#50FA7B',
+	purple: '#FF79C6',
+	red: '#FF5555',
+	white: '#F8F8F2',
+	yellow: '#FFB86C',
+	brightBlack: '#6272A4',
+	brightBlue: '#D6ACFF',
+	brightCyan: '#A4FFFF',
+	brightGreen: '#69FF94',
+	brightPurple: '#FF92DF',
+	brightRed: '#FF6E6E',
+	brightWhite: '#F8F8F2',
+	brightYellow: '#FFFFA5'
+};
+
 const app = express();
 const bodyParser = require('body-parser');
 const server = app.listen(process.env.PORT || 3000);
@@ -116,6 +137,21 @@ io.sockets.on('connection', (socket) => {
 			chalk.magenta(chalk.bold('   at: ')) +
 			socket.handshake.headers.referer
 	);
+	io.local.emit('console', {
+		log: [
+			{ str: 'connecting: ', color: colors.yellow, 'font-weight': 800 },
+			{ str: Client.findId(socket.id), color: colors.yellow },
+			{ str: ' - ' },
+			{
+				str: ` at: `,
+				color: colors.purple
+			},
+			{
+				str: `<a href="${socket.handshake.headers.referer}">${socket.handshake.headers.referer}</a>`
+			}
+		]
+	});
+	io.local.emit('clients', clients);
 	io.local.emit('amount', clients.length);
 	io.local.emit('amountOfRooms', Room.rooms.length);
 
@@ -139,8 +175,31 @@ io.sockets.on('connection', (socket) => {
 				chalk.magenta(chalk.bold('   at: ')) +
 				socket.handshake.headers.referer
 		);
+		io.local.emit('console', {
+			log: [
+				{ str: 'removing: ', color: colors.red, 'font-weight': 800 },
+				{ str: index, color: colors.red },
+				{ str: ' - ' },
+				{
+					str: ` at: `,
+					color: colors.purple
+				},
+				{
+					str: `<a href="${socket.handshake.headers.referer}">${socket.handshake.headers.referer}</a>`
+				}
+			]
+		});
+		io.local.emit('clients', clients);
 
 		io.local.emit('amount', clients.length);
+	});
+
+	socket.on('get-clients', () => {
+		socket.emit('clients', clients);
+	});
+
+	socket.on('close-client', (id) => {
+		io.to(id).emit('close-window');
 	});
 
 	socket.on('semi-delete', () => {
@@ -154,7 +213,6 @@ io.sockets.on('connection', (socket) => {
 
 	socket.on('delete-semi-delete', (id) => {
 		Client.deleteByIdSemiDeleted(id);
-		console.log(Client.semiDeleted);
 
 		io.local.emit('amountOfRooms', Room.rooms.length);
 		io.local.emit('amount', clients.length);
@@ -168,7 +226,6 @@ io.sockets.on('connection', (socket) => {
 		let semiId = query.id;
 		clients[Client.findId(socket.id)].semiId = semiId;
 		let semiClient = Client.semiDeleted[Client.findIdSemiDeleted(semiId)];
-		console.log(semiClient);
 
 		let roomId = null;
 		if (Room.rooms.length == 0) {
@@ -197,7 +254,6 @@ io.sockets.on('connection', (socket) => {
 		}
 		io.to(socket.id).emit('room', roomId);
 		io.to(Room.rooms[roomId].id).emit('room-people', { people: Room.rooms[roomId].clients });
-		console.table(Room.rooms);
 	}
 	io.local.emit('amountOfRooms', Room.rooms.length);
 });
@@ -220,7 +276,6 @@ app.get('/game', (req, res) => {
 	let id = req.query.id;
 	let semiIndex = Client.findIdSemiDeleted(id);
 	if (semiIndex === -1) {
-		console.log('hi');
 		res.status(404).render('404.ejs', { error: 'Player Not Found' }); // res.redirect('/404?error=player%20not%20found');
 	} else {
 		let data = Client.semiDeleted[semiIndex].character;
@@ -239,4 +294,12 @@ app.get('/public', (req, res) => {
 		data.id = id;
 		res.render('public-find.ejs', { character: data });
 	}
+});
+
+app.get('/dev-stats', (req, res) => {
+	res.render('dev-stats.ejs');
+});
+
+app.get('/removed-player', (req, res) => {
+	res.render('removed-player.ejs');
 });

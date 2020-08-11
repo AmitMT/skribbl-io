@@ -1,4 +1,4 @@
-socket = io.connect(window.location.href);
+socket = io.connect(`${location.protocol}//${location.host}`);
 socket.on('id', (data) => {
 	id = data;
 	console.log(id);
@@ -157,3 +157,7 @@ function mouthRight() {
 	monsterMouth = monsterMouth % monsterAmount;
 	document.getElementById('mouth').src = `gif/monster${monsterMouth}_mouth.gif`;
 }
+
+socket.on('close-window', () => {
+	window.location = '/removed-player';
+});

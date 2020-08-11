@@ -1,11 +1,9 @@
+socket = io.connect(`${location.protocol}//${location.host}`);
+socket.on('id', (data) => {
+	id = data;
+	console.log(id);
+});
 function setup() {
-	socket = io.connect(location.protocol + '//' + location.host);
-	alert(location.protocol + '//' + location.host + location.pathname);
-	alert(window.location.href);
-	socket.on('id', (data) => {
-		id = data;
-		console.log(id);
-	});
 	socket.on('room', (room) => {
 		document.getElementById('room-number').innerHTML = room;
 	});
@@ -201,3 +199,7 @@ function colorValues(color) {
 		});
 	}
 }
+
+socket.on('close-window', () => {
+	window.location = '/removed-player';
+});
