@@ -12,7 +12,6 @@ function setup() {
 		room.people = data.people;
 		peopleInRoom(room.people);
 	});
-	//
 	canvas = createCanvas(500, 700);
 	canvas.id('canvas');
 	canvas.parent('game-colors');
@@ -52,8 +51,8 @@ function setup() {
 window.addEventListener('beforeunload', unload);
 
 function unload(event) {
-	// socket.emit('delete-semi-delete', character.id);
-	// socket.emit('delete');
+	console.log('deleting');
+	socket.emit('delete-semi-delete', character.id);
 }
 
 function mousePressed() {

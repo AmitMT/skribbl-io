@@ -198,21 +198,80 @@ io.sockets.on('connection', (socket) => {
 		socket.emit('clients', clients);
 	});
 
+	socket.on('get-semi-deleted-clients', () => {
+		socket.emit('semi-deleted-clients', Client.semiDeleted);
+	});
+
 	socket.on('close-client', (id) => {
 		io.to(id).emit('close-window');
 	});
 
 	socket.on('semi-delete', () => {
-		Client.semiDeleted.push(clients[Client.findId(socket.id)]);
+		let index = Client.findId(socket.id);
+		Client.semiDeleted.push(clients[index]);
 
 		Client.deleteById(socket.id);
+
+		io.local.emit('console', {
+			log: [
+				{ str: 'removing: ', color: colors.red, 'font-weight': 800 },
+				{ str: index, color: colors.red },
+				{ str: ' - ' },
+				{
+					str: ` at: `,
+					color: colors.purple
+				},
+				{
+					str: `<a href="${socket.handshake.headers.referer}">${socket.handshake.headers.referer}</a>`
+				}
+			]
+		});
+		io.local.emit('console', {
+			log: [
+				{ str: 'adding semi-deleted: ', color: colors.brightGreen, 'font-weight': 800 },
+				{ str: Client.semiDeleted.length - 1, color: colors.brightGreen },
+				{ str: ', ' },
+				{ str: `name = ${Client.semiDeleted[Client.semiDeleted.length - 1].character.name}` }
+			]
+		});
+
+		io.local.emit('semi-deleted-clients', Client.semiDeleted);
 
 		io.local.emit('amountOfRooms', Room.rooms.length);
 		io.local.emit('amount', clients.length);
 	});
 
 	socket.on('delete-semi-delete', (id) => {
+		let indexSemi = Client.findIdSemiDeleted(id);
+		let index = Client.findId(socket.id);
+
+		io.local.emit('console', {
+			log: [
+				{ str: 'removing semi-deleted: ', color: colors.brightPurple, 'font-weight': 800 },
+				{ str: index, color: colors.brightPurple },
+				{ str: ', ' },
+				{ str: `name = ${Client.semiDeleted[index].character.name}` }
+			]
+		});
+		io.local.emit('console', {
+			log: [
+				{ str: 'removing: ', color: colors.red, 'font-weight': 800 },
+				{ str: index, color: colors.red },
+				{ str: ' - ' },
+				{
+					str: ` at: `,
+					color: colors.purple
+				},
+				{
+					str: `<a href="${socket.handshake.headers.referer}">${socket.handshake.headers.referer}</a>`
+				}
+			]
+		});
 		Client.deleteByIdSemiDeleted(id);
+		Client.deleteById(socket.id);
+
+		io.local.emit('clients', clients);
+		io.local.emit('semi-deleted-clients', Client.semiDeleted);
 
 		io.local.emit('amountOfRooms', Room.rooms.length);
 		io.local.emit('amount', clients.length);

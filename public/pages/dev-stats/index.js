@@ -59,6 +59,27 @@ window.onload = () => {
 		}
 	});
 	socket.emit('get-clients');
+
+	socket.on('semi-deleted-clients', (data) => {
+		let semiClients = data;
+		document.getElementById('semi-deleted').innerHTML = '';
+		for (let i = 0; i < semiClients.length; i++) {
+			let div = document.createElement('div');
+			div.setAttribute('id', semiClients[i].id);
+			let child = document.createElement('div');
+			child.innerHTML = i;
+			div.appendChild(child);
+			child = document.createElement('div');
+			child.innerHTML = semiClients[i].character.name;
+			div.appendChild(child);
+			child = document.createElement('div');
+			child.innerHTML = semiClients[i].id;
+			div.appendChild(child);
+
+			document.getElementById('semi-deleted').appendChild(div);
+		}
+	});
+	socket.emit('get-semi-deleted-clients');
 };
 
 socket.on('close-window', () => {
